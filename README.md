@@ -5,7 +5,6 @@ Here you will find all the information needed to implement any script in the Clu
 ### Important commands
 
 ```{r message=FALSE}
-
 mkdir <new_folder_name>          # Create a new directory  
 cd <folder_name>                 # Access the directory  
 pwd                              # View the current directory  
@@ -15,7 +14,6 @@ qstat -anu <login>               # Check the status of running jobs
 module load <software_name>      # Load the desired software  
 r                                # Start the R software  
 $                                # Specify a variable to be used 
-
 ```
 
 ### PBS script
@@ -25,7 +23,6 @@ The PBS script must be modified according to your specific needs.
 The file 0.RUNME.PBS is the main PBS script, responsible for starting the execution of the R script, which in turn will call all other necessary scripts.
 
 ```{r message=FALSE, warning=FALSE}
-
 #!/bin/bash                             # Do not change
 #PBS -N job                             # Job's name
 #PBS -l nodes=1:ppn=4                   # Specify nodes & ppn
@@ -53,7 +50,6 @@ module load r # Loading R                     # Load R
 
 # Run R script
 Rscript RUNME.R $scenario                     # Run R script calling the variable scenario
-
 ```
 
 It is important to have an additional file called scenarios_test.txt, which contain all the variable combinations to be tested, including:
@@ -71,7 +67,6 @@ The scenarios_test.txt file will look like the following example:
 You will have columns representing different variables, and all possible values of each variable will be combined with all values of the other variables. These combinations will be used inside R during execution.
 
 ```{r message=FALSE}
-
 rm(list=ls())
 
 setwd("<your_dir>/")
@@ -81,5 +76,4 @@ args = commandArgs(trailingOnly=TRUE)
 variable_1 <- as.numeric(args[1])               # Taking first arg
 variable_2 <- as.numeric(args[2])               # Taking second arg 
 variable_3 <- as.numeric(args[3])               # Taking third arg
-
 ```
