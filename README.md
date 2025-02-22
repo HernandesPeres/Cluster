@@ -60,10 +60,6 @@ All these variables will be read and processed, line by line, within R during ex
 
 ### scenarios_test.txt 
 
-![](images/Screenshot 2025-02-22 194254.png)
-
-The scenarios_test.txt file will look like the following example:
-
 You will have columns representing different variables, and all possible values of each variable will be combined with all values of the other variables. These combinations will be used inside R during execution.
 
 ```{r message=FALSE}
