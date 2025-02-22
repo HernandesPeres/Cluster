@@ -1,0 +1,28 @@
+#!/bin/bash
+#PBS -N job
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=23:59:00
+#PBS -l mem=8gb
+#PBS -o output.log
+#PBS -e error.log
+#PBS -m abe
+#PBS -M <your_email>
+#PBS -J 1-10
+
+### Setting up the environment - Do not change this part (never)
+
+cd $PBS_O_WORKDIR
+
+### Your script begins here
+
+jobID=$PBS_ARRAY_INDEX
+
+fileInfo="<your_dir>/scenarios_test.txt"
+
+scenario=$(sed -n ${jobID}p ${fileInfo})
+
+module load r # Loading R
+
+# Run R script
+Rscript RUNME.R $scenario
+
