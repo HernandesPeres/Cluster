@@ -179,7 +179,7 @@ qsub <file_name>.pbs      # Submit a PBS script for job execution
 qstat -anu <login>        # Check the status of running jobs for a specific user
 ```
 
-3. Job deleting
+3. Deleting job
 ```{bash}
 pkill -u $USER <process_name>
 pkill -u $USER                 
