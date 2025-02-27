@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#PBS -N Clonal_breeding_simulation
+#PBS -l nodes=1:ppn=4,mem=20gb
+#PBS -l walltime=168:00:00
+#PBS -m abe
+#PBS -M <your_email>
+
+# Setting up the environment - Do not change this part (never)
+cd $PBS_O_WORKDIR
+
+# Loading modules
+source /etc/profile.d/modules.sh
+
+# Check if JOB_INDEX is defined
+if [ -z "$JOB_INDEX" ]; then
+    echo "Error: The JOB_INDEX environment variable is not defined."
+    echo "You probably forgot to pass JOB_INDEX via 'qsub -v JOB_INDEX=<value>' in the submission script."
+    exit 1  # Exit with an error code
+fi
+
+echo "Executing job with index: $JOB_INDEX"
+
+# jobID with the value passed by JOB_INDEX
+jobID=$JOB_INDEX
+
+multiple_jobs="<your_dir>/scenarios"
+
+scenario=$(sed -n ${jobID}p ${multiple_jobs})
+
+module load r/4.4.1
+
+Rscript RUNME.R $scenario
