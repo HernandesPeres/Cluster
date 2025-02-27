@@ -1,4 +1,3 @@
-
 ## Cluster 💻
 
 Here you will find all the information needed to implement R scripts in the Cluster.
@@ -131,12 +130,47 @@ In the example, two columns are used to refer to the variables *'rep'* and *'her
 
 After defining the *"scenarios"* we also have to define the previously mentioned file called **submit_jobs.sh** which is used to implement multiple jobs without submitting them as a single job. Submitting them as one job could lead to interruptions if it requires too much memory.
 
-First, you need to give execution permission using the following command:
+### Adjusting "submit_jobs.sh"
+
+```{bash}
+#!/bin/bash
+```
+
+Defining the total number of jobs - (adjustable). In our case we have 4 combination 
+```{bash}
+NUM_JOBS=4
+```
+
+Defining the name of the PBS script previously defined as _"simulation_jobs.pbs"_.
+```{bash}
+PBS_SCRIPT="simulation_jobs.pbs"
+```
+
+Index range (1 to NUM_JOBS)
+```{bash}
+for i in $(seq 1 $NUM_JOBS)
+do
+    echo -n "Submitting job with index $i - "
+    # Attempts to run qsub and capture output and error
+    # qsub uses -v to pass the JOB_INDEX environment variable with the value of $i
+    # This variable can be accessed within the PBS script (clonal_job.pbs) as $JOB_INDEX
+    JID=$(qsub -v JOB_INDEX=$i $PBS_SCRIPT 2>&1)
+    if [ $? -eq 0 ]; then
+        # If qsub was successful (exit code 0), print the JID
+        echo "JID: $JID"
+    else
+        # If there was an error (non-zero exit code), print the error message
+        echo "Error: $JID"
+    fi
+done
+
+```
+
+After setting your _'submit_jobs.sh'_ script, you need to give execution permission using the following command:
 
 ```{bash}
 chmod +x submit_jobs.sh
 ```
-
 
 so now, instead of use *'qsub'* to submit the *'simulation.pbs'* file, we use:
 
@@ -179,7 +213,7 @@ qsub <file_name>.pbs      # Submit a PBS script for job execution
 qstat -anu <login>        # Check the status of running jobs for a specific user
 ```
 
-3. Deleting job
+3. Job deleting
 ```{bash}
 pkill -u $USER <process_name>
 pkill -u $USER                 
